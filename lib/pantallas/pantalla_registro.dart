@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:rumbo_libre/customizables/boton_personalizado.dart';
 import 'package:rumbo_libre/customizables/campo_texto_personalizado.dart';
-import 'package:rumbo_libre/pantallas/pantalla_registro.dart';
+import 'package:rumbo_libre/pantallas/pantalla_login.dart';
 
-class PantallaLogin extends StatefulWidget {
-  const PantallaLogin({super.key});
+class PantallaRegistro extends StatefulWidget {
+  const PantallaRegistro({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
-  _PantallaLoginState createState() => _PantallaLoginState();
+  _PantallaRegistroState createState() => _PantallaRegistroState();
 }
 
-class _PantallaLoginState extends State<PantallaLogin> {
+class _PantallaRegistroState extends State<PantallaRegistro> {
   final TextEditingController _controladorCorreo = TextEditingController();
   final TextEditingController _controladorContrasena = TextEditingController();
+  final TextEditingController _controladorConfirmarContrasena =
+      TextEditingController();
   final _claveFormulario = GlobalKey<FormState>();
 
   @override
@@ -36,12 +38,12 @@ class _PantallaLoginState extends State<PantallaLogin> {
             Image.asset('assets/logo.png', width: 150),
             const SizedBox(height: 20),
 
-            // Formulario para el login
+            // Formulario para el registro
             Form(
               key: _claveFormulario,
               child: Column(
                 children: [
-                  // Campo de correo electrónico (usando la clase reutilizable)
+                  // Campo de correo electrónico
                   CampoTextoPersonalizado(
                     etiqueta: 'Correo Electrónico',
                     icono: Icons.email,
@@ -55,7 +57,7 @@ class _PantallaLoginState extends State<PantallaLogin> {
                   ),
                   const SizedBox(height: 20),
 
-                  // Campo de contraseña (usando la clase reutilizable)
+                  // Campo de contraseña
                   CampoTextoPersonalizado(
                     etiqueta: 'Contraseña',
                     icono: Icons.lock,
@@ -70,20 +72,42 @@ class _PantallaLoginState extends State<PantallaLogin> {
                   ),
                   const SizedBox(height: 20),
 
-                  // Botón de iniciar sesión (usando la clase reutilizable)
-                  BotonPersonalizado(
-                    texto: 'Iniciar Sesión',
-                    colorFondo: Colors.white,
-                    colorTexto: Colors.teal,
-                    accion: () {
-                      // Acción a realizar cuando el botón es presionado
+                  // Campo para confirmar contraseña
+                  CampoTextoPersonalizado(
+                    etiqueta: 'Confirmar Contraseña',
+                    icono: Icons.lock,
+                    controlador: _controladorConfirmarContrasena,
+                    esContrasenia: true,
+                    validador: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Por favor confirma tu contraseña';
+                      }
+                      if (value != _controladorContrasena.text) {
+                        return 'Las contraseñas no coinciden';
+                      }
+                      return null;
                     },
                   ),
                   const SizedBox(height: 20),
 
-                  // Botón de registro (usando la clase reutilizable)
+                  // Botón de registro
                   BotonPersonalizado(
-                    texto: '¿No tienes cuenta? Regístrate',
+                    texto: 'Registrar',
+                    colorFondo: Colors.white,
+                    colorTexto: Colors.teal,
+                    accion: () {
+                      if (_claveFormulario.currentState?.validate() ?? false) {
+                        // Aquí puedes agregar la lógica para registrar al usuario
+                        // Ejemplo: navegación a la pantalla de login después del registro
+                      }
+                    },
+                    altura: 20,
+                  ),
+                  const SizedBox(height: 20),
+
+                  // Botón para volver a la pantalla de login
+                  BotonPersonalizado(
+                    texto: '¿Ya tienes cuenta? Inicia sesión',
                     colorFondo: Colors.white,
                     colorTexto: Colors.teal,
                     accion: () {
@@ -91,7 +115,8 @@ class _PantallaLoginState extends State<PantallaLogin> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const PantallaRegistro()),
+                          builder: (context) => const PantallaLogin(),
+                        ),
                       );
                     },
                   ),
