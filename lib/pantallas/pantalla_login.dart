@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:rumbo_libre/customizables/boton_personalizado.dart';
+import 'package:rumbo_libre/customizables/campo_texto_personalizado.dart';
 
 class PantallaLogin extends StatefulWidget {
   const PantallaLogin({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
   _PantallaLoginState createState() => _PantallaLoginState();
 }
 
@@ -32,31 +33,18 @@ class _PantallaLoginState extends State<PantallaLogin> {
             // Logo de la aplicación
             Image.asset('assets/logo.png', width: 150),
             const SizedBox(height: 20),
-            const SizedBox(height: 40),
 
             // Formulario para el login
             Form(
               key: _claveFormulario,
               child: Column(
                 children: [
-                  // Campo de correo electrónico
-                  TextFormField(
-                    controller: _controladorCorreo,
-                    decoration: InputDecoration(
-                      labelText: 'Correo Electrónico',
-                      labelStyle: const TextStyle(color: Colors.white70),
-                      prefixIcon: const Icon(Icons.email, color: Colors.white),
-                      filled: true,
-                      fillColor: Colors.white.withOpacity(0.2),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide.none,
-                      ),
-                      contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 15),
-                    ),
-                    style: const TextStyle(color: Colors.white),
-                    validator: (value) {
+                  // Campo de correo electrónico (usando la clase reutilizable)
+                  CampoTextoPersonalizado(
+                    etiqueta: 'Correo Electrónico',
+                    icono: Icons.email,
+                    controlador: _controladorCorreo,
+                    validador: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Por favor ingresa un correo';
                       }
@@ -65,25 +53,13 @@ class _PantallaLoginState extends State<PantallaLogin> {
                   ),
                   const SizedBox(height: 20),
 
-                  // Campo de contraseña
-                  TextFormField(
-                    controller: _controladorContrasena,
-                    obscureText: true,
-                    decoration: InputDecoration(
-                      labelText: 'Contraseña',
-                      labelStyle: const TextStyle(color: Colors.white70),
-                      prefixIcon: const Icon(Icons.lock, color: Colors.white),
-                      filled: true,
-                      fillColor: Colors.white.withOpacity(0.2),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide.none,
-                      ),
-                      contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 15),
-                    ),
-                    style: const TextStyle(color: Colors.white),
-                    validator: (value) {
+                  // Campo de contraseña (usando la clase reutilizable)
+                  CampoTextoPersonalizado(
+                    etiqueta: 'Contraseña',
+                    icono: Icons.lock,
+                    controlador: _controladorContrasena,
+                    esContrasenia: true,
+                    validador: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Por favor ingresa tu contraseña';
                       }
@@ -92,41 +68,25 @@ class _PantallaLoginState extends State<PantallaLogin> {
                   ),
                   const SizedBox(height: 20),
 
-                  // Botón de iniciar sesión
-                  ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.teal,
-                      backgroundColor: Colors.white, // Color del texto
-                      shadowColor: Colors.tealAccent.withOpacity(0.5),
-                      elevation: 10, // Sombra para profundidad
-                      padding: const EdgeInsets.symmetric(vertical: 15),
-                      shape: RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.circular(15), // Bordes redondeados
-                      ),
-                      textStyle: const TextStyle(fontSize: 18),
-                    ),
-                    child: const Text('Iniciar Sesión'),
+                  // Botón de iniciar sesión (usando la clase reutilizable)
+                  BotonPersonalizado(
+                    texto: 'Iniciar Sesión',
+                    colorFondo: Colors.white,
+                    colorTexto: Colors.teal,
+                    accion: () {
+                      // Acción a realizar cuando el botón es presionado
+                    },
                   ),
                   const SizedBox(height: 20),
 
-                  // Botón de registro
-                  TextButton(
-                    onPressed: () {
-                      // Navegar a la pantalla de registro
+                  // Botón de registro (usando la clase reutilizable)
+                  BotonPersonalizado(
+                    texto: '¿No tienes cuenta? Regístrate',
+                    colorFondo: Colors.white,
+                    colorTexto: Colors.teal,
+                    accion: () {
+                      // Acción a realizar cuando el botón es presionado
                     },
-                    style: TextButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 15),
-                    ),
-                    child: const Text(
-                      '¿No tienes cuenta? Regístrate',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
                   ),
                 ],
               ),
